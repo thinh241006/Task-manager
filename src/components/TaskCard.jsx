@@ -1,4 +1,4 @@
-function TaskCard({ task }) {
+function TaskCard({ task, onToggleComplete, onDelete }) {
   return (
     <div className="bg-white rounded-xl shadow p-4 flex justify-between items-center">
       <div>
@@ -7,12 +7,18 @@ function TaskCard({ task }) {
         </h3>
         <span className="text-sm text-gray-500">#{task.tag}</span>
       </div>
-      <input
-        type="checkbox"
-        checked={task.completed}
-        readOnly
-        className="w-5 h-5 accent-blue-500"
-      />
+      <div className="flex gap-2">
+        <button onClick={() => onToggleComplete(task.id)}
+                className={`px-3 py-1 text-sm rounded ${
+                task.completed ? 'bg-green-400 text-white' : `bg-gray-200`
+                }`}>
+          {task.completed ? 'Undo' : 'Done'}
+        </button>
+        <button onClick={() => onDelete(task.id)}
+                className="px-3 py-1 text-sm bg-red-400 text-white rounded">
+                Delete
+        </button>
+      </div>
     </div>
   )
 }

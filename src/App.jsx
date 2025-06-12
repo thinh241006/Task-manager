@@ -1,5 +1,6 @@
 import Header from './components/Header'
 import TaskCard from './components/TaskCard'
+import React, {useState} from 'react';
 
 const mockTasks = [
   { id: 1, title: "Finish React project", tag: "work", completed: false },
@@ -8,6 +9,7 @@ const mockTasks = [
 ]
 
 function App() {
+  const [task, setTask] = useState(mockTasks);
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 px-4 py-6">
       <div className="max-w-2xl mx-auto">

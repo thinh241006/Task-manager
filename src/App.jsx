@@ -2,6 +2,7 @@ import Header from './components/Header'
 import TaskCard from './components/TaskCard'
 import React, {useState} from 'react';
 
+
 const mockTasks = [
   { id: 1, title: "Finish React project", tag: "work", completed: false },
   { id: 2, title: "Read 10 pages", tag: "personal", completed: true },
@@ -14,6 +15,8 @@ function App() {
   const [inputTag, setInputTag] = useState('')
   const [filterTag, setFilterTag] = useState('all')
   const [filterStatus, setFilterStatus] = useState('all')
+  const [searchTag, setSearchTag] = useState('')
+
   const handleToggleComplete = (id) => {
     setTasks(prev => 
       prev.map(task => 
@@ -96,11 +99,22 @@ function App() {
         ))}
       </div>
 
+      <input
+        type="text"
+        placeholder="Search by tag..."
+        value={searchTag}
+        onChange={(e) => setSearchTag(e.target.value.toLowerCase())}
+        className="p-2 border border-gray-300 rounded mb-4 w-full"
+      />
+
 
         {/* Task List */}
         <div className="space-y-4">
           {tasks
-            .filter(task => filterTag === 'all' || task.tag === filterTag)
+            .filter(task => 
+              (filterTag === 'all' || task.tag === filterTag) &&
+              (searchTag === '' || task.tag.toLowerCase().includes(searchTag))
+            )
             .filter(task =>
               filterStatus === 'all' ||
               (filterStatus === 'completed' && task.completed) ||
@@ -114,6 +128,7 @@ function App() {
                 onDelete={handleDelete}
               />
           ))}
+
         </div>
       </div>
     </div>

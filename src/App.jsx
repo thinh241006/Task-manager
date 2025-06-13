@@ -12,6 +12,8 @@ function App() {
   const [tasks, setTasks] = useState(mockTasks)
   const [inputTitle, setInputTitle] = useState('')
   const [inputTag, setInputTag] = useState('')
+  const [filterTag, setFilterTag] = useState('all')
+  const [filterStatus, setFilterStatus] = useState('all')
   const handleToggleComplete = (id) => {
     setTasks(prev => 
       prev.map(task => 
@@ -66,15 +68,51 @@ function App() {
           </button>
         </form>
 
+        <div className="flex gap-2 mb-6">
+        {/* Filter by Tag */}
+        {['all', 'work', 'personal', 'health'].map(tag => (
+          <button
+            key={tag}
+            onClick={() => setFilterTag(tag)}
+            className={`px-3 py-1 rounded border ${
+              filterTag === tag ? 'bg-blue-500 text-white' : 'bg-white'
+            }`}
+          >
+            {tag}
+          </button>
+        ))}
+
+        {/* Filter by Status */}
+        {['all', 'completed', 'incomplete'].map(status => (
+          <button
+            key={status}
+            onClick={() => setFilterStatus(status)}
+            className={`px-3 py-1 rounded border ${
+              filterStatus === status ? 'bg-green-500 text-white' : 'bg-white'
+            }`}
+          >
+            {status}
+          </button>
+        ))}
+      </div>
+
+
         {/* Task List */}
         <div className="space-y-4">
-          {tasks.map(task => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              onToggleComplete={handleToggleComplete}
-              onDelete={handleDelete}
-            />
+          {tasks
+            .filter(task => filterTag === 'all' || task.tag === filterTag)
+            .filter(task =>
+              filterStatus === 'all' ||
+              (filterStatus === 'completed' && task.completed) ||
+              (filterStatus === 'incomplete' && !task.completed)
+            )
+            .map(task => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                onToggleComplete={handleToggleComplete}
+                onDelete={handleDelete}
+              />
           ))}
         </div>
       </div>

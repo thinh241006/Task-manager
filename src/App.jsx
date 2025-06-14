@@ -13,8 +13,8 @@ function App() {
   const [tasks, setTasks] = useState(mockTasks)
   const [inputTitle, setInputTitle] = useState('')
   const [inputTag, setInputTag] = useState('')
-  const [filterTag, setFilterTag] = useState('all')
-  const [filterStatus, setFilterStatus] = useState('all')
+  const [filterTag, setFilterTag] = useState('All')
+  const [filterStatus, setFilterStatus] = useState('All')
   const [searchTag, setSearchTag] = useState('')
 
   const handleToggleComplete = (id) => {
@@ -28,6 +28,19 @@ function App() {
   const handleDelete = (id) => {
     setTasks(prev => prev.filter(task => task.id !== id))
   }
+
+  const availableTags = [...new Set(tasks.map(task => task.tag))].filter(tag => tag)
+  const filteredTasks = tasks
+    .filter(task => 
+      (filterTag === 'All' || task.tag === filterTag) &&
+      (searchTag === '' || task.tag.toLowerCase().includes(searchTag))
+    )
+    .filter(task =>
+      filterStatus === 'All' ||
+      (filterStatus === 'completed' && task.completed) ||
+      (filterStatus === 'incomplete' && !task.completed)
+    )
+
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 px-4 py-6">
       <div className="max-w-2xl mx-auto">
@@ -78,6 +91,7 @@ function App() {
           setFilterTag={setFilterTag}
           filterStatus={filterStatus}
           setFilterStatus={setFilterStatus}
+          availableTags={availableTags}
         />
       </div>
 
@@ -89,28 +103,24 @@ function App() {
         className="p-2 border border-gray-300 rounded mb-4 w-full"
       />
 
+      <p className="mb-2 text-sm text-gray-600">
+        Showing {filteredTasks.length} {filteredTasks.length === 1 ? 'task' : 'tasks'}
+      </p>
 
         {/* Task List */}
         <div className="space-y-4">
-          {tasks
-            .filter(task => 
-              (filterTag === 'All' || task.tag === filterTag) &&
-              (searchTag === '' || task.tag.toLowerCase().includes(searchTag))
-            )
-            .filter(task =>
-              filterStatus === 'All' ||
-              (filterStatus === 'completed' && task.completed) ||
-              (filterStatus === 'incomplete' && !task.completed)
-            )
-            .map(task => (
+          {filteredTasks.length === 0 ? (
+            <p className="text-center text-gray-500">No tasks found.</p>
+          ) : (
+            filteredTasks.map(task => (
               <TaskCard
                 key={task.id}
                 task={task}
                 onToggleComplete={handleToggleComplete}
                 onDelete={handleDelete}
               />
-          ))}
-
+            ))
+          )}
         </div>
       </div>
     </div>

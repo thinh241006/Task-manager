@@ -1,7 +1,7 @@
 function Filters({ filterTag, setFilterTag, filterStatus, setFilterStatus }) {
   return (
     <div className="flex gap-2 mb-6 flex-wrap">
-      {['all', 'work', 'personal', 'health'].map(tag => (
+      {['All', 'work', 'personal', 'health'].map(tag => (
         <button
           key={tag}
           onClick={() => setFilterTag(tag)}
@@ -12,7 +12,7 @@ function Filters({ filterTag, setFilterTag, filterStatus, setFilterStatus }) {
           {tag}
         </button>
       ))}
-      {['all', 'completed', 'incomplete'].map(status => (
+      {['All', 'completed', 'incomplete'].map(status => (
         <button
           key={status}
           onClick={() => setFilterStatus(status)}

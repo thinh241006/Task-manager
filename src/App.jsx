@@ -1,7 +1,7 @@
 import Header from './components/Header'
 import TaskCard from './components/TaskCard'
 import React, {useState} from 'react';
-
+import Filters from './components/Filters'
 
 const mockTasks = [
   { id: 1, title: "Finish React project", tag: "work", completed: false },
@@ -71,32 +71,14 @@ function App() {
           </button>
         </form>
 
-        <div className="flex gap-2 mb-6">
-        {/* Filter by Tag */}
-        {['all', 'work', 'personal', 'health'].map(tag => (
-          <button
-            key={tag}
-            onClick={() => setFilterTag(tag)}
-            className={`px-3 py-1 rounded border ${
-              filterTag === tag ? 'bg-blue-500 text-white' : 'bg-white'
-            }`}
-          >
-            {tag}
-          </button>
-        ))}
-
-        {/* Filter by Status */}
-        {['all', 'completed', 'incomplete'].map(status => (
-          <button
-            key={status}
-            onClick={() => setFilterStatus(status)}
-            className={`px-3 py-1 rounded border ${
-              filterStatus === status ? 'bg-green-500 text-white' : 'bg-white'
-            }`}
-          >
-            {status}
-          </button>
-        ))}
+      <div className="flex gap-2 mt-10">
+        {/* Filters  */}
+        <Filters
+          filterTag={filterTag}
+          setFilterTag={setFilterTag}
+          filterStatus={filterStatus}
+          setFilterStatus={setFilterStatus}
+        />
       </div>
 
       <input
@@ -112,11 +94,11 @@ function App() {
         <div className="space-y-4">
           {tasks
             .filter(task => 
-              (filterTag === 'all' || task.tag === filterTag) &&
+              (filterTag === 'All' || task.tag === filterTag) &&
               (searchTag === '' || task.tag.toLowerCase().includes(searchTag))
             )
             .filter(task =>
-              filterStatus === 'all' ||
+              filterStatus === 'All' ||
               (filterStatus === 'completed' && task.completed) ||
               (filterStatus === 'incomplete' && !task.completed)
             )

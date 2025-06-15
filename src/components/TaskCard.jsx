@@ -6,6 +6,10 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit }) {
   const [editTag, setEditTag] = useState(task.tag);
 
   const handleSave = () => {
+    if (editTitle.trim() === '') {
+      alert("Task title cannot be empty.");
+      return;
+    }
     onEdit(task.id, editTitle, editTag);
     setIsEditing(false);
   };

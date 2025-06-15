@@ -41,6 +41,14 @@ function App() {
       (filterStatus === 'incomplete' && !task.completed)
     )
 
+  const handleEdit = (id, newTitle, newTag) => {
+  setTasks(prev =>
+    prev.map(task =>
+      task.id === id ? { ...task, title: newTitle, tag: newTag } : task
+    )
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 px-4 py-6">
       <div className="max-w-2xl mx-auto">
@@ -118,7 +126,9 @@ function App() {
                 task={task}
                 onToggleComplete={handleToggleComplete}
                 onDelete={handleDelete}
+                onEdit={handleEdit}
               />
+
             ))
           )}
         </div>

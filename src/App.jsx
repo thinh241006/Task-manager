@@ -106,10 +106,6 @@ function App() {
       <p className="mb-2 text-sm text-gray-600">
         Showing {filteredTasks.length} {filteredTasks.length === 1 ? 'task' : 'tasks'}
       </p>
-      
-      <p className="mb-2 text-sm text-gray-600">
-        Showing {filteredTasks.length} {filteredTasks.length === 1 ? 'task' : 'tasks'}
-      </p>
 
         {/* Task List */}
         <div className="space-y-4">

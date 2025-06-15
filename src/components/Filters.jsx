@@ -19,7 +19,7 @@ function Filters({ filterTag, setFilterTag, filterStatus, setFilterStatus, avail
         onChange={(e) => setFilterStatus(e.target.value)}
         className="p-2 border rounded"
       >
-        <option value="all">All Status</option>
+        <option value="All">All Status</option>
         <option value="completed">Completed</option>
         <option value="incomplete">Incomplete</option>
       </select>

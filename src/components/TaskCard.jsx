@@ -4,14 +4,16 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
   const [editTag, setEditTag] = useState(task.tag);
+  const [error, setError] = useState('');
 
   const handleSave = () => {
-    if (editTitle.trim() === '') {
-      alert("Task title cannot be empty.");
-      return;
-    }
-    onEdit(task.id, editTitle, editTag);
-    setIsEditing(false);
+  if (editTitle.trim() === '') {
+    setError('Title is required.');
+    return;
+  }
+  setError('');
+  onEdit(task.id, editTitle, editTag);
+  setIsEditing(false);
   };
 
   return (
@@ -19,12 +21,16 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit }) {
       <div>
         {isEditing ? (
           <div className="flex flex-col gap-2">
-            <input
-              type="text"
-              value={editTitle}
-              onChange={(e) => setEditTitle(e.target.value)}
-              className="p-1 border rounded"
-            />
+            <div className="flex flex-col">
+              <input
+                type="text"
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                className="p-1 border rounded"
+              />
+              {error && <span className="text-sm text-red-500">{error}</span>}
+            </div>
+
             <input
               type="text"
               value={editTag}

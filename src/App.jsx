@@ -1,15 +1,23 @@
 import Header from './components/Header'
 import TaskCard from './components/TaskCard'
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Filters from './components/Filters'
 
-const [tasks, setTasks] = useState(() => {
-  const saved = localStorage.getItem('tasks')
-  return saved ? JSON.parse(saved) : mockTasks
-})
+const mockTasks = [
+  { id: 1, title: "Finish React project", tag: "work", completed: false },
+  { id: 2, title: "Read 10 pages", tag: "personal", completed: true },
+  { id: 3, title: "Go for a walk", tag: "health", completed: false }
+]
 
 function App() {
-  const [tasks, setTasks] = useState(mockTasks)
+  const [tasks, setTasks] = useState(() => {
+    const saved = localStorage.getItem('tasks')
+    return saved ? JSON.parse(saved) : mockTasks
+  })
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+  }, [tasks])
+
   const [inputTitle, setInputTitle] = useState('')
   const [inputTag, setInputTag] = useState('')
   const [filterTag, setFilterTag] = useState('All')

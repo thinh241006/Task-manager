@@ -19,8 +19,6 @@ function App() {
     localStorage.setItem('tasks', JSON.stringify(tasks))
   }, [tasks])
 
-  const [inputTitle, setInputTitle] = useState('')
-  const [inputTag, setInputTag] = useState('')
   const [filterTag, setFilterTag] = useState('All')
   const [filterStatus, setFilterStatus] = useState('All')
   const [searchTag, setSearchTag] = useState('')
@@ -62,43 +60,17 @@ function App() {
       <div className="max-w-2xl mx-auto">
         <Header />
         {/* Add Task Form */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
+        <AddTaskForm
+          onAdd={({title, tag}) => {
             const newTask = {
-              id: Date.now(),
-              title: inputTitle,
-              tag: inputTag,
+              id:Date.now(),
+              title,
+              tag,
               completed: false
-            }
-            setTasks([newTask, ...tasks])
-            setInputTitle('')
-            setInputTag('')
-          }}
-          className="flex flex-col gap-3 mb-6"
-        >
-          <input
-            type="text"
-            placeholder="Task title"
-            value={inputTitle}
-            onChange={(e) => setInputTitle(e.target.value)}
-            className="p-2 border rounded"
-            required
-          />
-          <input
-            type="text"
-            placeholder="Tag (e.g. work, health)"
-            value={inputTag}
-            onChange={(e) => setInputTag(e.target.value)}
-            className="p-2 border rounded"
-          />
-          <button
-            type="submit"
-            className="bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-          >
-            Add Task
-          </button>
-        </form>
+            };
+            setTasks([newTask, ...tasks]);
+          }} 
+        />
 
       <div className="flex gap-2 mt-10">
         {/* Filters  */}

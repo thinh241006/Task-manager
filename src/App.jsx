@@ -2,6 +2,7 @@ import Header from './components/Header'
 import TaskCard from './components/TaskCard'
 import React, {useState, useEffect} from 'react';
 import Filters from './components/Filters'
+import AddTaskForm from './components/AddTaskForm';
 
 const mockTasks = [
   { id: 1, title: "Finish React project", tag: "work", completed: false },

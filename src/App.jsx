@@ -11,10 +11,13 @@ const mockTasks = [
 ]
 
 function App() {
+  {/* try to load from localStorage, if not found uses mockTasks*/}
   const [tasks, setTasks] = useState(() => {
-    const saved = localStorage.getItem('tasks')
+    const saved = localStorage.getItem('tasks') 
     return saved ? JSON.parse(saved) : mockTasks
   })
+
+  {/* every time tasks changes, save them back to localStorage */}
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks))
   }, [tasks])
@@ -35,6 +38,7 @@ function App() {
     setTasks(prev => prev.filter(task => task.id !== id))
   }
 
+  {/* create an array with set of task.tag inside it and remove "" tag */}
   const availableTags = [...new Set(tasks.map(task => task.tag))].filter(tag => tag)
   const filteredTasks = tasks
     .filter(task => 

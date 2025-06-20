@@ -17,7 +17,7 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit }) {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow p-4 flex justify-between items-center">
+    <div className={`bg-white rounded-xl shadow p-4 flex justify-between items-center ${isEditing ? 'bg-yellow-50' : ''}`}>
       <div>
         {isEditing ? (
           <div className="flex flex-col gap-2">
@@ -40,7 +40,7 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit }) {
           </div>
         ) : (
           <>
-            <h3 className={`font-medium ${task.completed ? 'line-through text-gray-400' : ''}`}>
+            <h3 className={`font-medium mb-1 ${task.completed ? 'line-through text-gray-400' : ''}`}>
               {task.title}
             </h3>
             <span className="text-sm text-gray-500">#{task.tag}</span>
@@ -52,7 +52,12 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit }) {
         {isEditing ? (
           <>
             <button onClick={handleSave} className="px-3 py-1 text-sm bg-green-500 text-white rounded">Save</button>
-            <button onClick={() => setIsEditing(false)} className="px-3 py-1 text-sm bg-gray-300 rounded">Cancel</button>
+            <button onClick={() => {
+              setIsEditing(false);
+              setEditTitle(task.title);
+              setEditTag(task.tag);
+              setError('');
+            }} className="px-3 py-1 text-sm bg-gray-300 rounded">Cancel</button>
           </>
         ) : (
           <>

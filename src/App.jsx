@@ -66,7 +66,7 @@ function App() {
   };
 
   const clearCompleted = () => {
-    const confirm = window.confirm("Are you sure you want to delete all completed tasks?");
+    const confirmed = window.confirm("Are you sure you want to delete all completed tasks?");
     if (confirmed){
       setTasks(prev => prev.filter(task => !task.completed));
     }
@@ -111,6 +111,26 @@ function App() {
       <p className="mb-2 text-sm text-gray-600">
         Showing {filteredTasks.length} {filteredTasks.length === 1 ? 'task' : 'tasks'}
       </p>
+
+      <div className="flex flex-wrap gap-2 mb-4">
+          {/* Check if any task is not completed then render after && if not show nothing */} 
+          {tasks.some(task => !task.completed) && (
+            <button
+              onClick={markAllComplete}
+              className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 text-sm"
+            >
+              Mark All as Completed
+            </button>
+          )}
+          {tasks.some(task => task.completed) && (
+            <button
+              onClick={clearCompleted}
+              className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 text-sm"
+            >
+              Clear Completed Tasks
+            </button>
+          )}
+      </div>
 
         {/* Task List */}
         <div className="space-y-4">

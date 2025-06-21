@@ -59,6 +59,19 @@ function App() {
     );
   };
 
+  const markAllComplete = () => {
+    setTasks(prev =>
+      prev.map(task => ({...task, completed: true}))
+    );
+  };
+
+  const clearCompleted = () => {
+    const confirm = window.confirm("Are you sure you want to delete all completed tasks?");
+    if (confirmed){
+      setTasks(prev => prev.filter(task => !task.completed));
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 px-4 py-6">
       <div className="max-w-2xl mx-auto">

@@ -25,6 +25,7 @@ function App() {
   const [filterTag, setFilterTag] = useState('All')
   const [filterStatus, setFilterStatus] = useState('All')
   const [searchTag, setSearchTag] = useState('')
+  const [sortOption, setSortOption] = useState('newest')
 
   const handleToggleComplete = (id) => {
     setTasks(prev => 
@@ -72,6 +73,14 @@ function App() {
     }
   };
 
+  const sortedTasks = [...filteredTasks].sort((a, b) => {
+        if (sortOption === 'newest') return b.id - a.id;
+        if (sortOption === 'oldest') return a.id - b.id;
+        if (sortOption === 'az') return a.title.localeCompare(b.title);
+        if (sortOption === 'completed') return (b.completed === a.completed) ? 0 : b.completed ? -1 : 1;
+        return 0;
+      });
+
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 px-4 py-6">
       <div className="max-w-2xl mx-auto">
@@ -108,6 +117,17 @@ function App() {
         className="p-2 border border-gray-300 rounded mb-4 w-full"
       />
 
+      <select
+        value={sortOption}
+        onChange={(e) => setSortOption(e.target.value)}
+        className="p-2 border border-gray-300 rounded mb-4"
+      >
+        <option value="newest">Sort by Newest</option>
+        <option value="oldest">Sort by Oldest</option>
+        <option value="az">Sort A-Z</option>
+        <option value="completed">Sort by Completed</option>
+      </select>
+
       <p className="mb-2 text-sm text-gray-600">
         Showing {filteredTasks.length} {filteredTasks.length === 1 ? 'task' : 'tasks'}
       </p>
@@ -141,7 +161,7 @@ function App() {
           {filteredTasks.length === 0 ? (
             <p className="text-center text-gray-500">No tasks found.</p>
           ) : (
-            filteredTasks.map(task => (
+            sortedTasks.map(task => (
               <TaskCard
                 key={task.id}
                 task={task}

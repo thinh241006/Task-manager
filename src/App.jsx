@@ -132,6 +132,10 @@ function App() {
           )}
       </div>
 
+      <p className="text-sm text-gray-600 mb-4">
+         {tasks.filter(task => task.completed).length} of {tasks.length} tasks completed
+      </p>
+        
         {/* Task List */}
         <div className="space-y-4">
           {filteredTasks.length === 0 ? (

@@ -5,9 +5,9 @@ import Filters from './components/Filters'
 import AddTaskForm from './components/AddTaskForm';
 
 const mockTasks = [
-  { id: 1, title: "Finish React project", tag: "work", completed: false },
-  { id: 2, title: "Read 10 pages", tag: "personal", completed: true },
-  { id: 3, title: "Go for a walk", tag: "health", completed: false }
+  { id: 1, title: "Finish React project", tag: "work", completed: false, pinned: false },
+  { id: 2, title: "Read 10 pages", tag: "personal", completed: true, pinned: false },
+  { id: 3, title: "Go for a walk", tag: "health", completed: false, pinned: false }
 ]
 
 function App() {
@@ -79,7 +79,16 @@ function App() {
         if (sortOption === 'az') return a.title.localeCompare(b.title);
         if (sortOption === 'completed') return (b.completed === a.completed) ? 0 : b.completed ? -1 : 1;
         return 0;
-      });
+      })
+      .sort((a, b) => b.pinned - a.pinned); 
+
+  const handleTogglePin = (id) => {
+  setTasks(prev =>
+    prev.map(task =>
+      task.id === id ? { ...task, pinned: !task.pinned } : task
+    )
+  );
+};
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 px-4 py-6">
@@ -92,7 +101,8 @@ function App() {
               id:Date.now(),
               title,
               tag,
-              completed: false
+              completed: false,
+              pinned: false,
             };
             setTasks([newTask, ...tasks]);
           }} 
@@ -158,7 +168,7 @@ function App() {
         
         {/* Task List */}
         <div className="space-y-4">
-          {filteredTasks.length === 0 ? (
+          {sortedTasks.length === 0 ? (
             <p className="text-center text-gray-500">No tasks found.</p>
           ) : (
             sortedTasks.map(task => (
@@ -168,6 +178,7 @@ function App() {
                 onToggleComplete={handleToggleComplete}
                 onDelete={handleDelete}
                 onEdit={handleEdit}
+                onTogglePin={handleTogglePin}
               />
 
             ))

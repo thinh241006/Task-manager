@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function TaskCard({ task, onToggleComplete, onDelete, onEdit }) {
+function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
   const [editTag, setEditTag] = useState(task.tag);
@@ -66,6 +66,13 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit }) {
             </button>
             <button onClick={() => setIsEditing(true)} className="px-3 py-1 text-sm bg-yellow-400 text-white rounded">Edit</button>
             <button onClick={() => onDelete(task.id)} className="px-3 py-1 text-sm bg-red-400 text-white rounded">Delete</button>
+            <button
+              onClick={() => onTogglePin(task.id)}
+              className={`px-3 py-1 text-sm rounded ${task.pinned ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            >
+              {task.pinned ? 'Unpin' : 'Pin'}
+            </button>
+
           </>
         )}
       </div>

@@ -43,6 +43,18 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
             <h3 className={`font-medium mb-1 ${task.completed ? 'line-through text-gray-400' : ''}`}>
               {task.title}
             </h3>
+            <div className="flex items-center gap-2 mb-1">
+              {task.completed && (
+                <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">
+                  Completed
+                </span>
+              )}
+              {task.pinned && (
+                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">
+                  Pinned
+                </span>
+              )}
+            </div>
             <span className="text-sm text-gray-500">#{task.tag}</span>
           </>
         )}

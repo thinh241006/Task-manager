@@ -119,13 +119,23 @@ function App() {
         />
       </div>
 
-      <input
-        type="text"
-        placeholder="Search by tag..."
-        value={searchTag}
-        onChange={(e) => setSearchTag(e.target.value.toLowerCase())}
-        className="p-2 border border-gray-300 rounded mb-4 w-full"
-      />
+      <div className="flex gap-2 mb-4">
+        <input
+          type="text"
+          placeholder="Search by tag..."
+          value={searchTag}
+          onChange={(e) => setSearchTag(e.target.value.toLowerCase())}
+          className="p-2 border border-gray-300 rounded w-full"
+        />
+        {searchTag && (
+          <button
+            onClick={() => setSearchTag('')}
+            className="px-3 py-1 bg-gray-300 text-sm rounded hover:bg-gray-400"
+          >
+            Clear
+          </button>
+        )}
+      </div>
 
       <select
         value={sortOption}

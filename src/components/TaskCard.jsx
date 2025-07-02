@@ -26,6 +26,7 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
                 type="text"
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
+                maxLength={50}
                 className="p-1 border rounded"
               />
               {error && <span className="text-sm text-red-500">{error}</span>}

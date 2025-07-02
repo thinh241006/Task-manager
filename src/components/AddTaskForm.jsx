@@ -20,6 +20,7 @@ const AddTaskForm = ({onAdd}) => {
                 placeholder="Task title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                maxLength={50}
                 className="border p-2 rounded"
             />
             <input 

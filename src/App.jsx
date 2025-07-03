@@ -173,7 +173,9 @@ function App() {
       </div>
 
       <p className="text-sm text-gray-600 mb-4">
-         {tasks.filter(task => task.completed).length} of {tasks.length} tasks completed
+        {tasks.length} total tasks —{" "}
+        {tasks.filter(t => t.completed).length} completed,{" "}
+        {tasks.filter(t => !t.completed).length} incomplete
       </p>
         
         {/* Task List */}

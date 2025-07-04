@@ -74,17 +74,38 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
           </>
         ) : (
           <>
-            <button onClick={() => onToggleComplete(task.id)} className={`px-3 py-1 text-sm rounded ${task.completed ? 'bg-green-400 text-white' : 'bg-gray-200'}`}>
+            <button
+              onClick={() => onToggleComplete(task.id)}
+              aria-label={task.completed ? 'Mark as incomplete' : 'Mark as complete'}
+              className={`px-3 py-1 text-sm rounded ${task.completed ? 'bg-green-400 text-white' : 'bg-gray-200'}`}
+            >
               {task.completed ? 'Undo' : 'Done'}
             </button>
-            <button onClick={() => setIsEditing(true)} className="px-3 py-1 text-sm bg-yellow-400 text-white rounded">Edit</button>
-            <button onClick={() => onDelete(task.id)} className="px-3 py-1 text-sm bg-red-400 text-white rounded">Delete</button>
+
+            <button
+              onClick={() => setIsEditing(true)}
+              aria-label="Edit task"
+              className="px-3 py-1 text-sm bg-yellow-400 text-white rounded"
+            >
+              Edit
+            </button>
+
+            <button
+              onClick={() => onDelete(task.id)}
+              aria-label="Delete task"
+              className="px-3 py-1 text-sm bg-red-400 text-white rounded"
+            >
+              Delete
+            </button>
+
             <button
               onClick={() => onTogglePin(task.id)}
+              aria-label={task.pinned ? 'Unpin task' : 'Pin task'}
               className={`px-3 py-1 text-sm rounded ${task.pinned ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
             >
               {task.pinned ? 'Unpin' : 'Pin'}
             </button>
+
 
           </>
         )}

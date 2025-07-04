@@ -3,6 +3,7 @@ import TaskCard from './components/TaskCard'
 import React, {useState, useEffect} from 'react';
 import Filters from './components/Filters'
 import AddTaskForm from './components/AddTaskForm';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 const mockTasks = [
   { id: 1, title: "Finish React project", tag: "work", completed: false, pinned: false },
@@ -73,14 +74,7 @@ function App() {
     }
   };
 
-  const sortedTasks = [...filteredTasks].sort((a, b) => {
-        if (sortOption === 'newest') return b.id - a.id;
-        if (sortOption === 'oldest') return a.id - b.id;
-        if (sortOption === 'az') return a.title.localeCompare(b.title);
-        if (sortOption === 'completed') return (b.completed === a.completed) ? 0 : b.completed ? -1 : 1;
-        return 0;
-      })
-      .sort((a, b) => b.pinned - a.pinned); 
+  const sortedTasks = [...filteredTasks].sort((a, b) => b.pinned - a.pinned);
 
   const handleTogglePin = (id) => {
   setTasks(prev =>
@@ -179,23 +173,71 @@ function App() {
       </p>
         
         {/* Task List */}
-        <div className="space-y-4">
-          {sortedTasks.length === 0 ? (
-            <p className="text-center text-gray-500">No tasks found.</p>
-          ) : (
-            sortedTasks.map(task => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                onToggleComplete={handleToggleComplete}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-                onTogglePin={handleTogglePin}
-              />
+        <DragDropContext
+          onDragEnd={(result) => {
+            if (!result.destination) return;
 
-            ))
-          )}
-        </div>
+            // Get the task that was moved from the sortedTasks array
+            const movedTask = sortedTasks[result.source.index];
+            
+            // Find the actual index of this task in the original tasks array
+            const originalIndex = tasks.findIndex(task => task.id === movedTask.id);
+            
+            // Create a new array from the original tasks
+            const reordered = Array.from(tasks);
+            
+            // Remove the task from its original position
+            reordered.splice(originalIndex, 1);
+            
+            // Find where to insert it based on the destination in sortedTasks
+            const destinationTask = sortedTasks[result.destination.index];
+            const destinationOriginalIndex = tasks.findIndex(task => task.id === destinationTask.id);
+            
+            // Insert at the new position
+            reordered.splice(destinationOriginalIndex, 0, movedTask);
+
+            setTasks(reordered);
+          }}
+        >
+          <Droppable droppableId="tasks">
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="space-y-4"
+              >
+                {sortedTasks.length === 0 ? (
+                  <p className="text-center text-gray-500">No tasks found.</p>
+                ) : (
+                  sortedTasks.map((task, index) => (
+                    <Draggable
+                      key={task.id}
+                      draggableId={task.id.toString()}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <TaskCard
+                            task={task}
+                            onToggleComplete={handleToggleComplete}
+                            onDelete={handleDelete}
+                            onEdit={handleEdit}
+                            onTogglePin={handleTogglePin}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))
+                )}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
     </div>
   )

@@ -90,16 +90,17 @@ function App() {
         <Header />
         {/* Add Task Form */}
         <AddTaskForm
-          onAdd={({title, tag}) => {
+          onAdd={({ title, tag, dueDate }) => {
             const newTask = {
-              id:Date.now(),
+              id: Date.now(),
               title,
               tag,
+              dueDate,
               completed: false,
               pinned: false,
             };
             setTasks([newTask, ...tasks]);
-          }} 
+          }}                  
         />
 
       <div className="flex gap-2 mt-10">

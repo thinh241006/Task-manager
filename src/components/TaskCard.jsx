@@ -4,16 +4,17 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
   const [editTag, setEditTag] = useState(task.tag);
+  const [editPriority, setEditPriority] = useState(task.priority || 'Medium');
   const [error, setError] = useState('');
 
   const handleSave = () => {
-  if (editTitle.trim() === '') {
-    setError('Title is required.');
-    return;
-  }
-  setError('');
-  onEdit(task.id, editTitle, editTag);
-  setIsEditing(false);
+    if (editTitle.trim() === '') {
+      setError('Title is required.');
+      return;
+    }
+    setError('');
+    onEdit(task.id, editTitle, editTag, editPriority);
+    setIsEditing(false);
   };
 
   return (
@@ -38,6 +39,16 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
               onChange={(e) => setEditTag(e.target.value)}
               className="p-1 border rounded"
             />
+
+            <select
+              value={editPriority}
+              onChange={(e) => setEditPriority(e.target.value)}
+              className="p-1 border rounded"
+            >
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
           </div>
         ) : (
           <>
@@ -54,6 +65,19 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
               {task.pinned && (
                 <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">
                   Pinned
+                </span>
+              )}
+              {task.priority && (
+                <span
+                  className={`text-xs px-2 py-0.5 rounded ${
+                    task.priority === 'High'
+                      ? 'bg-red-100 text-red-700'
+                      : task.priority === 'Medium'
+                      ? 'bg-yellow-100 text-yellow-700'
+                      : 'bg-green-100 text-green-700'
+                  }`}
+                >
+                  {task.priority} Priority
                 </span>
               )}
             </div>
@@ -83,6 +107,7 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
               setIsEditing(false);
               setEditTitle(task.title);
               setEditTag(task.tag);
+              setEditPriority(task.priority || 'Medium');
               setError('');
             }} className="px-3 py-1 text-sm bg-gray-300 rounded">Cancel</button>
           </>
@@ -119,8 +144,6 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
             >
               {task.pinned ? 'Unpin' : 'Pin'}
             </button>
-
-
           </>
         )}
       </div>

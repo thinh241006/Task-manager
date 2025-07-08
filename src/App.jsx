@@ -56,7 +56,7 @@ function App() {
   const handleEdit = (id, newTitle, newTag) => {
   setTasks(prev =>
     prev.map(task =>
-      task.id === id ? { ...task, title: newTitle, tag: newTag } : task
+      task.id === id ? { ...task, title: newTitle, tag: newTag, priority: newPriority } : task
     )
     );
   };
@@ -90,12 +90,13 @@ function App() {
         <Header />
         {/* Add Task Form */}
         <AddTaskForm
-          onAdd={({ title, tag, dueDate }) => {
+          onAdd={({ title, tag, dueDate, priority }) => {
             const newTask = {
               id: Date.now(),
               title,
               tag,
               dueDate,
+              priority: priority || 'Medium',
               completed: false,
               pinned: false,
             };

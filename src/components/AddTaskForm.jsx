@@ -4,6 +4,7 @@ const AddTaskForm = ({onAdd}) => {
     const [title, setTitle] = useState('');
     const [tag, setTag] = useState('');
     const [dueDate, setDueDate] = useState('');
+    const [priority, setPriority] = useState('Medium');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -11,7 +12,8 @@ const AddTaskForm = ({onAdd}) => {
             onAdd({
                 title,
                 tag,
-                dueDate: dueDate || null, // if no date picked
+                dueDate: dueDate || null,
+                priority,
               });
             setTitle('');
             setTag('');
@@ -35,6 +37,15 @@ const AddTaskForm = ({onAdd}) => {
                 onChange={(e) => setTag(e.target.value)}
                 className="border p-2 rounded"
             />
+            <select
+                value={priority}
+                onChange={(e) => setPriority(e.target.value)}
+                className="p-2 border border-gray-300 rounded w-full"
+                >
+                <option value="Low">Low Priority</option>
+                <option value="Medium">Medium Priority</option>
+                <option value="High">High Priority</option>
+            </select>
             <input
                 type="date"
                 value={dueDate}

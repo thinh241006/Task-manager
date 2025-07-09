@@ -27,6 +27,7 @@ function App() {
   const [filterStatus, setFilterStatus] = useState('All')
   const [searchTag, setSearchTag] = useState('')
   const [sortOption, setSortOption] = useState('newest')
+  const priorityOrder = { High: 3, Medium: 2, Low: 1 };
 
   const handleToggleComplete = (id) => {
     setTasks(prev => 
@@ -74,7 +75,18 @@ function App() {
     }
   };
 
-  const sortedTasks = [...filteredTasks].sort((a, b) => b.pinned - a.pinned);
+  const sortedTasks = [...filteredTasks]
+  .sort((a, b) => {
+    if (sortOption === 'newest') return b.id - a.id;
+    if (sortOption === 'oldest') return a.id - b.id;
+    if (sortOption === 'az') return a.title.localeCompare(b.title);
+    if (sortOption === 'completed') return (b.completed === a.completed) ? 0 : b.completed ? -1 : 1;
+    if (sortOption === 'priority') {
+      return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
+    }
+    return 0;
+  })
+  .sort((a, b) => b.pinned - a.pinned);
 
   const handleTogglePin = (id) => {
   setTasks(prev =>
@@ -142,6 +154,7 @@ function App() {
         <option value="oldest">Sort by Oldest</option>
         <option value="az">Sort A-Z</option>
         <option value="completed">Sort by Completed</option>
+        <option value="priority">Sort by Priority</option> {/* 🆕 */}
       </select>
 
       <p className="mb-2 text-sm text-gray-600">

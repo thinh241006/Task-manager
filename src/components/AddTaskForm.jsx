@@ -42,9 +42,9 @@ const AddTaskForm = ({onAdd}) => {
                 onChange={(e) => setPriority(e.target.value)}
                 className="p-2 border border-gray-300 rounded w-full"
                 >
-                <option value="Low">Low Priority</option>
-                <option value="Medium">Medium Priority</option>
-                <option value="High">High Priority</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
             </select>
             <input
                 type="date"

@@ -28,6 +28,7 @@ function App() {
   const [searchTag, setSearchTag] = useState('')
   const [sortOption, setSortOption] = useState('newest')
   const priorityOrder = { High: 3, Medium: 2, Low: 1 };
+  const [filterPriority, setFilterPriority] = useState('All');
 
   const handleToggleComplete = (id) => {
     setTasks(prev => 
@@ -44,15 +45,16 @@ function App() {
   {/* create an array with set of task.tag inside it and remove "" tag */}
   const availableTags = [...new Set(tasks.map(task => task.tag))].filter(tag => tag)
   const filteredTasks = tasks
-    .filter(task => 
-      (filterTag === 'All' || task.tag === filterTag) &&
-      (searchTag === '' || task.tag.toLowerCase().includes(searchTag))
-    )
-    .filter(task =>
-      filterStatus === 'All' ||
-      (filterStatus === 'completed' && task.completed) ||
-      (filterStatus === 'incomplete' && !task.completed)
-    )
+  .filter(task => 
+    (filterTag === 'All' || task.tag === filterTag) &&
+    (searchTag === '' || task.tag.toLowerCase().includes(searchTag)) &&
+    (filterPriority === 'All' || task.priority === filterPriority)
+  )
+  .filter(task =>
+    filterStatus === 'All' ||
+    (filterStatus === 'completed' && task.completed) ||
+    (filterStatus === 'incomplete' && !task.completed)
+  );
 
   const handleEdit = (id, newTitle, newTag) => {
   setTasks(prev =>

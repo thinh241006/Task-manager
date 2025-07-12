@@ -223,29 +223,60 @@ function App() {
                 {sortedTasks.length === 0 ? (
                   <p className="text-center text-gray-500">No tasks found.</p>
                 ) : (
-                  sortedTasks.map((task, index) => (
-                    <Draggable
-                      key={task.id}
-                      draggableId={task.id.toString()}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <TaskCard
-                            task={task}
-                            onToggleComplete={handleToggleComplete}
-                            onDelete={handleDelete}
-                            onEdit={handleEdit}
-                            onTogglePin={handleTogglePin}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))
+                  <>
+                    {/* Incomplete Tasks */}
+                    {sortedTasks.filter(t => !t.completed).map((task, index) => (
+                      <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <TaskCard
+                              task={task}
+                              onToggleComplete={handleToggleComplete}
+                              onDelete={handleDelete}
+                              onEdit={handleEdit}
+                              onTogglePin={handleTogglePin}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    
+                    {/* Completed Tasks */}
+                    {sortedTasks.filter(t => t.completed).length > 0 && (
+                      <>
+                        <h4 className="text-sm text-gray-600 mt-6 mb-2">Completed</h4>
+                        {sortedTasks
+                          .filter(t => t.completed)
+                          .map((task, index) => (
+                            <Draggable
+                              key={task.id}
+                              draggableId={task.id.toString()}
+                              index={sortedTasks.filter(t => !t.completed).length + index}
+                            >
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                >
+                                  <TaskCard
+                                    task={task}
+                                    onToggleComplete={handleToggleComplete}
+                                    onDelete={handleDelete}
+                                    onEdit={handleEdit}
+                                    onTogglePin={handleTogglePin}
+                                  />
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
+                      </>
+                    )}
+                  </>
                 )}
                 {provided.placeholder}
               </div>

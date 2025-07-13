@@ -55,11 +55,11 @@ function App() {
       (filterStatus === 'incomplete' && !task.completed)
     );
 
-  const handleEdit = (id, newTitle, newTag, newPriority) => {
+  const handleEdit = (id, newTitle, newTag, newPriority, newDueDate) => {
     setTasks(prev =>
       prev.map(task =>
         task.id === id
-          ? { ...task, title: newTitle, tag: newTag, priority: newPriority }
+          ? { ...task, title: newTitle, tag: newTag, priority: newPriority, dueDate: newDueDate }
           : task
       )
     );

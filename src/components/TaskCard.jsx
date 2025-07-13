@@ -6,6 +6,7 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
   const [editTag, setEditTag] = useState(task.tag);
   const [editPriority, setEditPriority] = useState(task.priority || 'Medium');
   const [error, setError] = useState('');
+  const [editDueDate, setEditDueDate] = useState(task.dueDate || '');
 
   const handleSave = () => {
     if (editTitle.trim() === '') {
@@ -13,7 +14,7 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
       return;
     }
     setError('');
-    onEdit(task.id, editTitle, editTag, editPriority);
+    onEdit(task.id, editTitle, editTag, editPriority, editDueDate);
     setIsEditing(false);
   };
 
@@ -32,7 +33,12 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
               />
               {error && <span className="text-sm text-red-500">{error}</span>}
             </div>
-
+            <input
+              type="date"
+              value={editDueDate ? editDueDate.slice(0, 10) : ''}
+              onChange={(e) => setEditDueDate(e.target.value)}
+              className="p-1 border rounded"
+            />
             <input
               type="text"
               value={editTag}
@@ -109,6 +115,7 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
               setEditTag(task.tag);
               setEditPriority(task.priority || 'Medium');
               setError('');
+              setEditDueDate(task.dueDate || '');
             }} className="px-3 py-1 text-sm bg-gray-300 rounded">Cancel</button>
           </>
         ) : (

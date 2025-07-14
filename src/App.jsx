@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Filters from './components/Filters';
 import AddTaskForm from './components/AddTaskForm';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import { Toaster, toast } from 'react-hot-toast';
+
 
 const priorityOrder = { High: 3, Medium: 2, Low: 1 };
 
@@ -35,10 +37,12 @@ function App() {
         task.id === id ? { ...task, completed: !task.completed } : task
       )
     );
+    toast.success('Task status updated!');
   };
 
   const handleDelete = (id) => {
     setTasks(prev => prev.filter(task => task.id !== id));
+    toast.success('Task deleted!');
   };
 
   const availableTags = [...new Set(tasks.map(task => task.tag))].filter(tag => tag);
@@ -63,16 +67,19 @@ function App() {
           : task
       )
     );
+    toast.success('Task updated!');
   };
 
   const markAllComplete = () => {
     setTasks(prev => prev.map(task => ({ ...task, completed: true })));
+    toast.success('All tasks marked as completed!');
   };
 
   const clearCompleted = () => {
     const confirmed = window.confirm("Are you sure you want to delete all completed tasks?");
     if (confirmed) {
       setTasks(prev => prev.filter(task => !task.completed));
+      toast.success('Completed tasks cleared!');
     }
   };
 
@@ -95,10 +102,12 @@ function App() {
         task.id === id ? { ...task, pinned: !task.pinned } : task
       )
     );
+    toast.success('Task pinned!');
   };
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 px-4 py-6">
+      <Toaster position="top-right" />
       <div className="max-w-2xl mx-auto">
         <Header />
 
@@ -114,6 +123,7 @@ function App() {
               pinned: false,
             };
             setTasks([newTask, ...tasks]);
+            toast.success('Task added!');
           }}
         />
 

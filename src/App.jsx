@@ -231,7 +231,10 @@ function App() {
                 className="space-y-4"
               >
                 {sortedTasks.length === 0 ? (
-                  <p className="text-center text-gray-500">No tasks found.</p>
+                  <div className="text-center text-gray-400 py-10 animate-pulse">
+                    <p className="text-xl font-medium">🎉 No tasks found!</p>
+                    <p className="text-sm">Try changing filters or add a new task.</p>
+                </div>                
                 ) : (
                   <>
                     {/* Incomplete Tasks */}

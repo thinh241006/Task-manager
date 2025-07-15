@@ -17,6 +17,8 @@ const AddTaskForm = ({onAdd}) => {
               });
             setTitle('');
             setTag('');
+            setDueDate('');
+            setPriority('Medium');
         }
     }
 
@@ -38,11 +40,10 @@ const AddTaskForm = ({onAdd}) => {
                 className="border p-2 rounded"
             />
             <select
-                value={filterPriority}
-                onChange={(e) => setFilterPriority(e.target.value)}
+                value={priority}
+                onChange={(e) => setPriority(e.target.value)}
                 className="p-2 border border-gray-300 rounded mb-4"
                 >
-                <option value="All">All Priorities</option>
                 <option value="High">High</option>
                 <option value="Medium">Medium</option>
                 <option value="Low">Low</option>

@@ -1,3 +1,5 @@
+import React from 'react';
+
 function Filters({ filterTag, setFilterTag, filterStatus, setFilterStatus, availableTags }) {
   return (
     <div className="flex flex-wrap gap-2">

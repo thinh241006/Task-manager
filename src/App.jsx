@@ -179,7 +179,19 @@ function App() {
             <option value="Low">Low</option>
           </select>
         </div>
-
+        {(filterTag !== 'All' || filterStatus !== 'All' || searchTag || filterPriority !== 'All') && (
+          <button
+            onClick={() => {
+              setFilterTag('All');
+              setFilterStatus('All');
+              setSearchTag('');
+              setFilterPriority('All');
+            }}
+            className="mb-4 px-3 py-1 bg-gray-300 text-sm rounded hover:bg-gray-400"
+          >
+            Reset Filters
+          </button>
+        )}
         <p className="mb-2 text-sm text-gray-600">
           Showing {filteredTasks.length} {filteredTasks.length === 1 ? 'task' : 'tasks'}
         </p>

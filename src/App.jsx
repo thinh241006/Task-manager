@@ -106,7 +106,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900 px-4 py-6">
+    <div className="min-h-screen text-gray-90dark:text-gray-100 px-4 py-6">
       <Toaster position="top-right" />
       <div className="max-w-2xl mx-auto">
         <Header />

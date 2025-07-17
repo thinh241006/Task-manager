@@ -27,7 +27,6 @@ function App() {
 
   const [filterTag, setFilterTag] = useState('All');
   const [filterStatus, setFilterStatus] = useState('All');
-  const [searchTag, setSearchTag] = useState('');
   const [sortOption, setSortOption] = useState('newest');
   const [filterPriority, setFilterPriority] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -142,23 +141,7 @@ function App() {
           />
         </div>
 
-        <div className="flex gap-2 mb-4 mt-4">
-          <input
-            type="text"
-            placeholder="Search by tag..."
-            value={searchTag}
-            onChange={(e) => setSearchTag(e.target.value.toLowerCase())}
-            className="p-2 border border-gray-300 rounded w-full"
-          />
-          {searchTag && (
-            <button
-              onClick={() => setSearchTag('')}
-              className="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-400 dark:hover:bg-gray-600"
-            >
-              Clear
-            </button>
-          )}
-        </div>
+
 
         <div className="flex gap-2 mb-4">
           <select
@@ -184,12 +167,12 @@ function App() {
             <option value="Low">Low</option>
           </select>
         </div>
-        {(filterTag !== 'All' || filterStatus !== 'All' || searchTag || filterPriority !== 'All') && (
+        {(filterTag !== 'All' || filterStatus !== 'All' || searchQuery || filterPriority !== 'All') && (
           <button
             onClick={() => {
               setFilterTag('All');
               setFilterStatus('All');
-              setSearchTag('');
+              setSearchQuery('');
               setFilterPriority('All');
             }}
             className="mb-4 px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-400 dark:hover:bg-gray-600"

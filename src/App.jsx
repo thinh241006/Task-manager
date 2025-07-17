@@ -49,16 +49,18 @@ function App() {
   const availableTags = [...new Set(tasks.map(task => task.tag))].filter(tag => tag);
 
   const filteredTasks = tasks
-    .filter(task =>
-      (filterTag === 'All' || task.tag === filterTag) &&
-      (searchTag === '' || task.tag.toLowerCase().includes(searchTag)) &&
-      (filterPriority === 'All' || task.priority === filterPriority)
-    )
-    .filter(task =>
-      filterStatus === 'All' ||
+  .filter(task =>
+    (filterTag === 'All' || task.tag === filterTag) &&
+    (filterPriority === 'All' || task.priority === filterPriority) &&
+    (filterStatus === 'All' ||
       (filterStatus === 'completed' && task.completed) ||
-      (filterStatus === 'incomplete' && !task.completed)
-    );
+      (filterStatus === 'incomplete' && !task.completed)) &&
+    (
+      searchQuery === '' ||
+      task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      task.tag.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  );
 
   const handleEdit = (id, newTitle, newTag, newPriority, newDueDate) => {
     setTasks(prev =>

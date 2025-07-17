@@ -17,7 +17,7 @@ function Header() {
   }, [darkMode]);
 
   return (
-    <header className="flex justify-between items-center py-4 px-6 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-md">
+    <header className="flex justify-between items-center py-4 px-6 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-md rounded-2xl">
       <h1 className="text-2xl font-bold">🗂️ Task Manager</h1>
       <button
         onClick={() => setDarkMode(!darkMode)}

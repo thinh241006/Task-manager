@@ -111,7 +111,8 @@ function App() {
       <div className="max-w-2xl mx-auto">
         <Header />
 
-        <AddTaskForm
+        <div className="mt-12">
+          <AddTaskForm
           onAdd={({ title, tag, dueDate, priority }) => {
             const newTask = {
               id: Date.now(),
@@ -126,6 +127,7 @@ function App() {
             toast.success('Task added!');
           }}
         />
+        </div>
 
         <div className="flex gap-2 mt-10">
           <Filters

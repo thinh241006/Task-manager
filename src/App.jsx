@@ -30,6 +30,7 @@ function App() {
   const [searchTag, setSearchTag] = useState('');
   const [sortOption, setSortOption] = useState('newest');
   const [filterPriority, setFilterPriority] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleToggleComplete = (id) => {
     setTasks(prev =>
@@ -220,6 +221,14 @@ function App() {
         <p className="text-sm text-gray-600 mb-4">
           {tasks.length} total tasks — {tasks.filter(t => t.completed).length} completed, {tasks.filter(t => !t.completed).length} incomplete
         </p>
+
+        <input
+          type="text"
+          placeholder="Search by title or tag..."
+          className="w-full p-2 border rounded mb-4 dark:bg-gray-800 dark:text-white"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
 
         <DragDropContext
           onDragEnd={(result) => {

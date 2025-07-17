@@ -148,7 +148,7 @@ function App() {
           {searchTag && (
             <button
               onClick={() => setSearchTag('')}
-              className="px-3 py-1 bg-gray-300 text-sm rounded hover:bg-gray-400"
+              className="px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-400 dark:hover:bg-gray-600"
             >
               Clear
             </button>
@@ -187,7 +187,7 @@ function App() {
               setSearchTag('');
               setFilterPriority('All');
             }}
-            className="mb-4 px-3 py-1 bg-gray-300 text-sm rounded hover:bg-gray-400"
+            className="mb-4 px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-400 dark:hover:bg-gray-600"
           >
             Reset Filters
           </button>

@@ -263,24 +263,30 @@ function App() {
                 ) : (
                   <>
                     {/* Incomplete Tasks */}
-                    {sortedTasks.filter(t => !t.completed).map((task, index) => (
-                      <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <TaskCard
-                              task={task}
-                              onToggleComplete={handleToggleComplete}
-                              onDelete={handleDelete}
-                              onEdit={handleEdit}
-                              onTogglePin={handleTogglePin}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
+                    {sortedTasks
+                      .filter(task =>
+                        task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        task.tag.toLowerCase().includes(searchQuery.toLowerCase())
+                      )
+                      .filter(task => !task.completed)
+                      .map((task, index) => (
+                        <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <TaskCard
+                                task={task}
+                                onToggleComplete={handleToggleComplete}
+                                onDelete={handleDelete}
+                                onEdit={handleEdit}
+                                onTogglePin={handleTogglePin}
+                              />
+                            </div>
+                          )}
+                        </Draggable>
                     ))}
                     
                     {/* Completed Tasks */}

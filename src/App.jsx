@@ -10,9 +10,11 @@ import { Toaster, toast } from 'react-hot-toast';
 const priorityOrder = { High: 3, Medium: 2, Low: 1 };
 
 const mockTasks = [
-  { id: 1, title: "Finish React project", tag: "work", completed: false, pinned: false, priority: 'High' },
+  { id: 1, title: "Finish React project", tag: "work", completed: false, pinned: false, priority: 'High', dueDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() },
   { id: 2, title: "Read 10 pages", tag: "personal", completed: true, pinned: false, priority: 'Low' },
-  { id: 3, title: "Go for a walk", tag: "health", completed: false, pinned: false, priority: 'Medium' }
+  { id: 3, title: "Go for a walk", tag: "health", completed: false, pinned: false, priority: 'Medium', dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() },
+  { id: 4, title: "Buy groceries", tag: "personal", completed: false, pinned: false, priority: 'Medium', dueDate: new Date().toISOString() },
+  { id: 5, title: "Call dentist", tag: "health", completed: false, pinned: false, priority: 'Low', dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() }
 ];
 
 function App() {
@@ -29,6 +31,7 @@ function App() {
   const [filterStatus, setFilterStatus] = useState('All');
   const [sortOption, setSortOption] = useState('newest');
   const [filterPriority, setFilterPriority] = useState('All');
+  const [filterDueDate, setFilterDueDate] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleToggleComplete = (id) => {
@@ -48,18 +51,60 @@ function App() {
   const availableTags = [...new Set(tasks.map(task => task.tag))].filter(tag => tag);
 
   const filteredTasks = tasks
-  .filter(task =>
-    (filterTag === 'All' || task.tag === filterTag) &&
-    (filterPriority === 'All' || task.priority === filterPriority) &&
-    (filterStatus === 'All' ||
-      (filterStatus === 'completed' && task.completed) ||
-      (filterStatus === 'incomplete' && !task.completed)) &&
-    (
-      searchQuery === '' ||
-      task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      task.tag.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  );
+  .filter(task => {
+    // Tag filter
+    if (filterTag !== 'All' && task.tag !== filterTag) return false;
+    
+    // Priority filter
+    if (filterPriority !== 'All' && task.priority !== filterPriority) return false;
+    
+    // Status filter
+    if (filterStatus !== 'All') {
+      if (filterStatus === 'completed' && !task.completed) return false;
+      if (filterStatus === 'incomplete' && task.completed) return false;
+    }
+    
+    // Due date filter
+    if (filterDueDate !== 'All') {
+      const today = new Date();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      
+      const endOfWeek = new Date(today);
+      endOfWeek.setDate(endOfWeek.getDate() + 7);
+      endOfWeek.setHours(23, 59, 59, 999);
+      
+      const taskDueDate = task.dueDate ? new Date(task.dueDate) : null;
+      
+      switch (filterDueDate) {
+        case 'overdue':
+          if (!taskDueDate || taskDueDate >= today || task.completed) return false;
+          break;
+        case 'dueToday':
+          if (!taskDueDate || taskDueDate.getTime() !== today.getTime() || task.completed) return false;
+          break;
+        case 'dueTomorrow':
+          if (!taskDueDate || taskDueDate.getTime() !== tomorrow.getTime() || task.completed) return false;
+          break;
+        case 'dueThisWeek':
+          if (!taskDueDate || taskDueDate > endOfWeek || task.completed) return false;
+          break;
+        case 'noDueDate':
+          if (taskDueDate) return false;
+          break;
+      }
+    }
+    
+    // Search filter
+    if (searchQuery !== '') {
+      const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           task.tag.toLowerCase().includes(searchQuery.toLowerCase());
+      if (!matchesSearch) return false;
+    }
+    
+    return true;
+  });
 
   const handleEdit = (id, newTitle, newTag, newPriority, newDueDate) => {
     setTasks(prev =>
@@ -93,6 +138,30 @@ function App() {
       if (sortOption === 'completed') return (b.completed === a.completed) ? 0 : b.completed ? -1 : 1;
       if (sortOption === 'priority') {
         return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
+      }
+      if (sortOption === 'dueDate') {
+        // Sort by due date: overdue first, then due today, then due tomorrow, then future dates
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(0, 0, 0, 0);
+        
+        const aDueDate = a.dueDate ? new Date(a.dueDate) : null;
+        const bDueDate = b.dueDate ? new Date(b.dueDate) : null;
+        
+        // Tasks without due dates go to the end
+        if (!aDueDate && !bDueDate) return 0;
+        if (!aDueDate) return 1;
+        if (!bDueDate) return -1;
+        
+        // Overdue tasks first
+        const aOverdue = aDueDate < today && !a.completed;
+        const bOverdue = bDueDate < today && !b.completed;
+        if (aOverdue && !bOverdue) return -1;
+        if (!aOverdue && bOverdue) return 1;
+        
+        // Then by actual due date
+        return aDueDate - bDueDate;
       }
       return 0;
     })
@@ -137,6 +206,8 @@ function App() {
             setFilterTag={setFilterTag}
             filterStatus={filterStatus}
             setFilterStatus={setFilterStatus}
+            filterDueDate={filterDueDate}
+            setFilterDueDate={setFilterDueDate}
             availableTags={availableTags}
           />
         </div>
@@ -154,6 +225,7 @@ function App() {
             <option value="az">Sort A-Z</option>
             <option value="completed">Sort by Completed</option>
             <option value="priority">Sort by Priority</option>
+            <option value="dueDate">Sort by Due Date</option>
           </select>
 
           <select
@@ -167,13 +239,14 @@ function App() {
             <option value="Low">Low</option>
           </select>
         </div>
-        {(filterTag !== 'All' || filterStatus !== 'All' || searchQuery || filterPriority !== 'All') && (
+        {(filterTag !== 'All' || filterStatus !== 'All' || searchQuery || filterPriority !== 'All' || filterDueDate !== 'All') && (
           <button
             onClick={() => {
               setFilterTag('All');
               setFilterStatus('All');
               setSearchQuery('');
               setFilterPriority('All');
+              setFilterDueDate('All');
             }}
             className="mb-4 px-3 py-1 bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-400 dark:hover:bg-gray-600"
           >

@@ -91,15 +91,39 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
             <span className="text-sm text-gray-500 dark:text-slate-400">#{task.tag}</span>
 
             {task.dueDate && (
-              <p className="text-xs text-gray-500 dark:text-slate-400">
-                Due: {new Date(task.dueDate).toLocaleDateString()}
-              </p>
-            )}
-
-            {task.dueDate && new Date(task.dueDate) < new Date() && !task.completed && (
-              <p className="text-xs text-red-500 dark:text-red-400 font-semibold">
-                Overdue!
-              </p>
+              <div className="flex items-center gap-1">
+                <span className="text-xs text-gray-500 dark:text-slate-400">
+                  Due: {new Date(task.dueDate).toLocaleDateString()}
+                </span>
+                {(() => {
+                  const dueDate = new Date(task.dueDate);
+                  const today = new Date();
+                  const tomorrow = new Date(today);
+                  tomorrow.setDate(tomorrow.getDate() + 1);
+                  tomorrow.setHours(0, 0, 0, 0);
+                  
+                  if (dueDate < today && !task.completed) {
+                    return (
+                      <span className="text-xs bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-0.5 rounded font-semibold">
+                        ⚠️ Overdue
+                      </span>
+                    );
+                  } else if (dueDate.getTime() === tomorrow.getTime() && !task.completed) {
+                    return (
+                      <span className="text-xs bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 px-2 py-0.5 rounded font-semibold">
+                        🔥 Due Tomorrow
+                      </span>
+                    );
+                  } else if (dueDate.getTime() === today.getTime() && !task.completed) {
+                    return (
+                      <span className="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-0.5 rounded font-semibold">
+                        ⏰ Due Today
+                      </span>
+                    );
+                  }
+                  return null;
+                })()}
+              </div>
             )}
           </>
         )}

@@ -180,7 +180,7 @@ function App() {
     <div className="min-h-screen text-gray-90dark:text-gray-100 px-4 py-6">
       <Toaster position="top-right" />
       <div className="max-w-2xl mx-auto">
-        <Header />
+        <Header tasks={tasks} />
 
         <div className="mt-12">
           <AddTaskForm
@@ -313,8 +313,12 @@ function App() {
               >
                 {sortedTasks.length === 0 ? (
                   <div className="text-center text-gray-400 py-10 animate-pulse">
-                    <p className="text-xl font-medium">🎉 No tasks found!</p>
-                    <p className="text-sm">Try changing filters or add a new task.</p>
+                    <div className="text-6xl mb-4">📝</div>
+                    <p className="text-xl font-medium">No tasks found!</p>
+                    <p className="text-sm">Try changing filters or add a new task above.</p>
+                    <div className="mt-4 text-xs text-gray-500">
+                      💡 Tip: Use the form above to create your first task
+                    </div>
                 </div>                
                 ) : (
                   <>

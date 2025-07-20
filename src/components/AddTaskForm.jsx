@@ -23,7 +23,7 @@ const AddTaskForm = ({onAdd}) => {
     }
 
     return (
-        <form onSubmit = {handleSubmit} className="flex flex-col gap-2 p-4 bg-white dark:bg-slate-800 rounded-2xl shadow">
+        <form onSubmit = {handleSubmit} className="flex flex-col gap-2 p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 border border-gray-100 dark:border-gray-700">
             <input 
                 type="text"
                 placeholder="Task title"
@@ -54,8 +54,8 @@ const AddTaskForm = ({onAdd}) => {
                 onChange={(e) => setDueDate(e.target.value)}
                 className="p-2 border border-gray-300 dark:border-slate-600 rounded w-full dark:bg-slate-700 dark:text-slate-100"
             />
-            <button type="submit" className="bg-blue-500 dark:bg-blue-700 text-white py-2 rounded hover:bg-blue-600 dark:hover:bg-blue-800 transition">
-                Add Task 
+            <button type="submit" className="bg-blue-500 dark:bg-blue-700 text-white py-2 rounded hover:bg-blue-600 dark:hover:bg-blue-800 transition-all duration-200 hover:scale-[1.02] font-medium">
+                ➕ Add Task 
             </button>
         </form>
     );

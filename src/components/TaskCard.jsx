@@ -19,7 +19,7 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
   };
 
   return (
-    <div className={`bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 rounded-xl shadow p-4 flex justify-between items-center ${isEditing ? 'bg-yellow-50 dark:bg-yellow-900' : ''}`}>
+    <div className={`bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 rounded-xl shadow-md hover:shadow-lg p-4 flex justify-between items-center transition-all duration-200 transform hover:scale-[1.02] ${isEditing ? 'bg-yellow-50 dark:bg-yellow-900 ring-2 ring-yellow-400' : ''} ${task.completed ? 'opacity-75' : ''}`}>
       <div>
         {isEditing ? (
           <div className="flex flex-col gap-2">
@@ -132,7 +132,7 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
       <div className="flex gap-2">
         {isEditing ? (
           <>
-            <button onClick={handleSave} className="px-3 py-1 text-sm bg-green-500 dark:bg-green-700 text-white rounded">Save</button>
+            <button onClick={handleSave} className="px-3 py-1 text-sm bg-green-500 dark:bg-green-700 text-white rounded hover:bg-green-600 dark:hover:bg-green-800 transition-colors duration-200">Save</button>
             <button onClick={() => {
               setIsEditing(false);
               setEditTitle(task.title);
@@ -140,40 +140,40 @@ function TaskCard({ task, onToggleComplete, onDelete, onEdit, onTogglePin }) {
               setEditPriority(task.priority || 'Medium');
               setError('');
               setEditDueDate(task.dueDate || '');
-            }} className="px-3 py-1 text-sm bg-gray-300 dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded">Cancel</button>
+            }} className="px-3 py-1 text-sm bg-gray-300 dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded hover:bg-gray-400 dark:hover:bg-slate-600 transition-colors duration-200">Cancel</button>
           </>
         ) : (
           <>
             <button
               onClick={() => onToggleComplete(task.id)}
               aria-label={task.completed ? 'Mark as incomplete' : 'Mark as complete'}
-              className={`px-3 py-1 text-sm rounded ${task.completed ? 'bg-green-400 dark:bg-green-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-900 dark:text-slate-100'}`}
+              className={`px-3 py-1 text-sm rounded hover:scale-105 transition-all duration-200 ${task.completed ? 'bg-green-400 dark:bg-green-700 text-white hover:bg-green-500 dark:hover:bg-green-600' : 'bg-gray-200 dark:bg-slate-700 text-gray-900 dark:text-slate-100 hover:bg-gray-300 dark:hover:bg-slate-600'}`}
             >
-              {task.completed ? 'Undo' : 'Done'}
+              {task.completed ? '✓ Undo' : '✓ Done'}
             </button>
 
             <button
               onClick={() => setIsEditing(true)}
               aria-label="Edit task"
-              className="px-3 py-1 text-sm bg-yellow-400 dark:bg-yellow-700 text-white rounded"
+              className="px-3 py-1 text-sm bg-yellow-400 dark:bg-yellow-700 text-white rounded hover:bg-yellow-500 dark:hover:bg-yellow-600 hover:scale-105 transition-all duration-200"
             >
-              Edit
+              ✏️ Edit
             </button>
 
             <button
               onClick={() => onDelete(task.id)}
               aria-label="Delete task"
-              className="px-3 py-1 text-sm bg-red-400 dark:bg-red-700 text-white rounded"
+              className="px-3 py-1 text-sm bg-red-400 dark:bg-red-700 text-white rounded hover:bg-red-500 dark:hover:bg-red-600 hover:scale-105 transition-all duration-200"
             >
-              Delete
+              🗑️ Delete
             </button>
 
             <button
               onClick={() => onTogglePin(task.id)}
               aria-label={task.pinned ? 'Unpin task' : 'Pin task'}
-              className={`px-3 py-1 text-sm rounded ${task.pinned ? 'bg-blue-500 dark:bg-blue-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-900 dark:text-slate-100'}`}
+              className={`px-3 py-1 text-sm rounded hover:scale-105 transition-all duration-200 ${task.pinned ? 'bg-blue-500 dark:bg-blue-700 text-white hover:bg-blue-600 dark:hover:bg-blue-800' : 'bg-gray-200 dark:bg-slate-700 text-gray-900 dark:text-slate-100 hover:bg-gray-300 dark:hover:bg-slate-600'}`}
             >
-              {task.pinned ? 'Unpin' : 'Pin'}
+              {task.pinned ? '📌 Unpin' : '📌 Pin'}
             </button>
           </>
         )}

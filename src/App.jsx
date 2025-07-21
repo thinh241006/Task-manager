@@ -314,7 +314,7 @@ function App() {
                 {sortedTasks.length === 0 ? (
                   <div className="text-center text-gray-400 py-10 animate-pulse">
                     <div className="text-6xl mb-4">📝</div>
-                    <p className="text-xl font-medium">No tasks found!</p>
+                    <p className="text-xl font-medium">No task found!</p>
                     <p className="text-sm">Try changing filters or add a new task above.</p>
                     <div className="mt-4 text-xs text-gray-500">
                       💡 Tip: Use the form above to create your first task
